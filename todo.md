@@ -1,0 +1,41 @@
+# Project TODO
+
+- [x] Initialise the managed React 19, Tailwind CSS 4, TypeScript, and Express project scaffold.
+- [x] Configure a browser Supabase client using environment variables only.
+- [x] Add typed environment validation and a safe missing-configuration state for Supabase.
+- [x] Establish routes for login, signup, capture, recipe results, recipe detail, cooking mode, and meal history.
+- [x] Create mobile-first placeholder screens and navigation escape routes for every planned route.
+- [x] Add Vitest coverage for Supabase configuration and the route registry.
+- [x] Verify the Step 1 foundation with type checking, tests, production build, and responsive screenshots.
+- [x] Stop after Step 1 and deliver the foundation for user review.
+- [x] Build Supabase email/password login and signup flows.
+- [x] Build Google OAuth through Supabase and redirect authenticated users to capture.
+- [x] Add session-aware route protection and auth callback handling for the capture screen.
+- [x] Add authentication validation, loading, error, and confirmation states.
+- [x] Add Vitest coverage for authentication helpers and redirect logic.
+- [x] Verify the Step 2 authentication experience and pause for review.
+- [ ] Enable the Google provider in Supabase Auth before testing live Google sign-in; the current project reports it disabled.
+- [x] Present Google OAuth as the preferred primary option on login and signup, with email/password secondary.
+- [x] Verify the revised Google-first authentication layout on desktop and mobile.
+- [x] Add a Skip for now action to login and signup so visitors can enter capture without an account.
+- [x] Permit guest access to capture while retaining authentication for account-specific areas.
+- [x] Verify the guest skip flow, guest capture state, and responsive auth layout.
+- [x] Add a subtle food-themed background image to login and signup without reducing form readability.
+- [x] Strengthen login and signup cards with a frosted-glass treatment.
+- [x] Verify the refined authentication screens at desktop and mobile breakpoints.
+- [x] Build the capture screen with an ingredient input, autocomplete, selected chips, and quick-add suggestions.
+- [x] Build health-goal toggles, a time filter, and a Find Recipes call to action.
+- [x] Preserve capture preferences during the active browser session and clearly distinguish guest versus signed-in state.
+- [x] Keep recipe discovery, details, and cooking accessible to guests while reserving history for signed-in users.
+- [x] Add Vitest coverage for ingredient, health-goal, time-filter, and submission helpers.
+- [x] Verify the Step 3 capture experience at desktop and mobile breakpoints.
+- [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
+- [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
+- [ ] Verify the pushed GitHub revision is ready for Vercel deployment.
+- [ ] Re-authorise GitHub with repository contents-write access; the active token can read repository metadata but receives HTTP 403 on write operations.
+- [ ] Integrate Gemini recipe generation with the specified structured JSON schema.
+- [ ] Build recipe results with frosted-glass cards and Pollinations.ai images.
+- [ ] Build recipe detail with live servings and ingredient quantity scaling.
+- [ ] Build full-screen cooking mode with per-step countdown timers.
+- [ ] Build post-cook rating prompt and meal logging.
+- [ ] Build searchable and filterable meal history.

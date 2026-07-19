@@ -29,6 +29,15 @@
 - [x] Keep recipe discovery, details, and cooking accessible to guests while reserving history for signed-in users.
 - [x] Add Vitest coverage for ingredient, health-goal, time-filter, and submission helpers.
 - [x] Verify the Step 3 capture experience at desktop and mobile breakpoints.
+- [x] Add the native Gemini API credential required for the exact gemini-2.0-flash integration.
+- [x] Define the supplied strict recipe JSON schema and prompt template as server-side generation contracts.
+- [x] Implement a server-side Gemini gemini-2.0-flash procedure with validated structured responses.
+- [x] Wire Find Recipes to the generation procedure with loading, error, and handoff states.
+- [x] Update health tags exactly to High protein, Gut-friendly, Low carb, High iron, Low fat, Clean carb, and Indulgent.
+- [x] Update time options exactly to 30 min, 1 hr, 2 hrs, and All day.
+- [x] Add Vitest coverage for recipe schema validation, prompt construction, and capture option changes.
+- [ ] Verify a live Gemini recipe generation response and the responsive capture experience.
+- [ ] Enable positive Gemini `generateContent` quota or billing for the configured native API key; live requests currently return HTTP 429 with free-tier request limit 0.
 - [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
 - [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
 - [ ] Verify the pushed GitHub revision is ready for Vercel deployment.

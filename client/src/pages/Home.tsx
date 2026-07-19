@@ -14,7 +14,9 @@ import {
   type HealthGoalId,
 } from "@/lib/capture";
 import { supabase } from "@/lib/supabase";
+import { saveGeneratedRecipes } from "@/lib/generatedRecipes";
 import { APP_ROUTES } from "@/routes";
+import { trpc } from "@/lib/trpc";
 import { ArrowRight, Check, ChevronDown, Clock3, History, LoaderCircle, LogIn, LogOut, Plus, Sparkles, X } from "lucide-react";
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -27,6 +29,7 @@ export default function Home() {
   const [ingredientQuery, setIngredientQuery] = useState("");
   const [isIngredientFocused, setIsIngredientFocused] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState("");
+  const generateRecipes = trpc.recipes.generate.useMutation();
   const suggestions = useMemo(
     () => findIngredientSuggestions(ingredientQuery, preferences.ingredients),
     [ingredientQuery, preferences.ingredients],
@@ -60,14 +63,24 @@ export default function Home() {
     if (ingredientQuery.trim()) selectIngredient(ingredientQuery);
   }
 
-  function handleSearch(event: FormEvent<HTMLFormElement>) {
+  async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!hasCaptureIngredients(preferences)) {
       setSubmissionMessage("Add at least one ingredient to start your recipe search.");
       return;
     }
     setSubmissionMessage("");
-    navigate(APP_ROUTES.results);
+    try {
+      const recipes = await generateRecipes.mutateAsync({
+        ingredients: preferences.ingredients,
+        healthGoals: preferences.healthGoals,
+        timeAvailable: preferences.timeAvailable,
+      });
+      saveGeneratedRecipes(recipes);
+      navigate(APP_ROUTES.results);
+    } catch (error) {
+      setSubmissionMessage(error instanceof Error ? error.message : "We could not generate recipes. Please try again.");
+    }
   }
 
   function handleGoalToggle(goal: HealthGoalId) {
@@ -206,7 +219,7 @@ export default function Home() {
                 <legend className="flex items-center gap-2 text-sm font-medium text-white/75"><Clock3 className="size-4 text-[#bad59a]" /> Time to cook</legend>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   {TIME_FILTERS.map((option) => {
-                    const selected = preferences.maxMinutes === option.value;
+                    const selected = preferences.timeAvailable === option.value;
                     return (
                       <button key={option.value} type="button" onClick={() => setPreferences((current) => selectTimeFilter(current, option.value))} aria-pressed={selected} className={`rounded-2xl border px-3 py-3 text-left transition ${selected ? "border-[#bad59a]/40 bg-[#bad59a]/10" : "border-white/10 bg-white/[0.025] hover:bg-white/[0.06]"}`}>
                         <span className="block text-sm font-semibold text-white/82">{option.label}</span><span className="mt-0.5 block text-xs text-white/38">{option.detail}</span>
@@ -218,10 +231,10 @@ export default function Home() {
 
               <div className="mt-auto pt-8">
                 {submissionMessage && <p role="status" className="mb-3 text-sm leading-6 text-[#f4c1ad]">{submissionMessage}</p>}
-                <button type="submit" className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#bad59a] px-5 text-sm font-semibold text-[#10110f] transition hover:bg-[#d5ecb8] active:scale-[0.98]">
-                  Find recipes <ArrowRight className="size-4" />
+                <button disabled={generateRecipes.isPending || !hasCaptureIngredients(preferences)} type="submit" className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#bad59a] px-5 text-sm font-semibold text-[#10110f] transition hover:bg-[#d5ecb8] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/35">
+                  {generateRecipes.isPending ? <><LoaderCircle className="size-4 animate-spin" /> Building your recipes</> : <>Find recipes — {preferences.ingredients.length} ingredient{preferences.ingredients.length === 1 ? "" : "s"} · {preferences.timeAvailable}<ArrowRight className="size-4" /></>}
                 </button>
-                <p className="mt-3 text-center text-xs leading-5 text-white/38">{hasCaptureIngredients(preferences) ? `Searching with ${preferences.ingredients.length} ingredient${preferences.ingredients.length === 1 ? "" : "s"} and a ${preferences.maxMinutes}-minute limit.` : "Add an ingredient, then we’ll start from there."}</p>
+                <p className="mt-3 text-center text-xs leading-5 text-white/38">{hasCaptureIngredients(preferences) ? `Gemini will create 4–6 ideas for your ${preferences.healthGoals.join(", ")} goals.` : "Add an ingredient, then we’ll start from there."}</p>
               </div>
             </aside>
           </form>

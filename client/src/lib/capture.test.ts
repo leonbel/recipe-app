@@ -27,9 +27,9 @@ describe("capture ingredient helpers", () => {
 
 describe("capture preference helpers", () => {
   it("preserves at least one health goal", () => {
-    expect(toggleHealthGoal(["balanced"], "balanced")).toEqual(["balanced"]);
-    expect(toggleHealthGoal(["balanced"], "high-protein")).toEqual(["balanced", "high-protein"]);
-    expect(toggleHealthGoal(["balanced", "high-protein"], "balanced")).toEqual(["high-protein"]);
+    expect(toggleHealthGoal(["High protein"], "High protein")).toEqual(["High protein"]);
+    expect(toggleHealthGoal(["High protein"], "Gut-friendly")).toEqual(["High protein", "Gut-friendly"]);
+    expect(toggleHealthGoal(["High protein", "Gut-friendly"], "High protein")).toEqual(["Gut-friendly"]);
   });
 
   it("requires one ingredient before a recipe search can begin", () => {
@@ -40,7 +40,7 @@ describe("capture preference helpers", () => {
 
   it("accepts supported cooking-time filters and ignores unsupported values", () => {
     const preferences = createDefaultCapturePreferences();
-    expect(selectTimeFilter(preferences, 15).maxMinutes).toBe(15);
-    expect(selectTimeFilter(preferences, 99)).toEqual(preferences);
+    expect(selectTimeFilter(preferences, "30 min").timeAvailable).toBe("30 min");
+    expect(selectTimeFilter(preferences, "15 min")).toEqual(preferences);
   });
 });

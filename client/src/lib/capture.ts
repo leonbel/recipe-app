@@ -1,11 +1,12 @@
-export type HealthGoalId = "balanced" | "high-protein" | "plant-forward" | "low-carb";
+import { HEALTH_TAGS, TIME_AVAILABLE_OPTIONS, type HealthTag, type TimeAvailable } from "@shared/recipe";
 
-export type TimeFilter = 15 | 30 | 45 | 60;
+export type HealthGoalId = HealthTag;
+export type TimeFilter = TimeAvailable;
 
 export type CapturePreferences = {
   ingredients: string[];
   healthGoals: HealthGoalId[];
-  maxMinutes: TimeFilter;
+  timeAvailable: TimeFilter;
 };
 
 export const INGREDIENT_CATALOG = [
@@ -47,23 +48,26 @@ export const INGREDIENT_CATALOG = [
 export const QUICK_ADD_INGREDIENTS = ["Eggs", "Spinach", "Chicken breast", "Chickpeas", "Tomatoes", "Rice"] as const;
 
 export const HEALTH_GOALS: ReadonlyArray<{ id: HealthGoalId; label: string; description: string }> = [
-  { id: "balanced", label: "Balanced", description: "Well-rounded everyday meals" },
-  { id: "high-protein", label: "High protein", description: "Protein-forward choices" },
-  { id: "plant-forward", label: "Plant-forward", description: "Veg-focused and flexible" },
-  { id: "low-carb", label: "Lower carb", description: "Lighter on starches" },
+  { id: "High protein", label: "High protein", description: "Protein-forward choices" },
+  { id: "Gut-friendly", label: "Gut-friendly", description: "Fibre and fermentation focused" },
+  { id: "Low carb", label: "Low carb", description: "Lighter on starches" },
+  { id: "High iron", label: "High iron", description: "Iron-rich ingredients" },
+  { id: "Low fat", label: "Low fat", description: "Lighter, leaner choices" },
+  { id: "Clean carb", label: "Clean carb", description: "Whole-food energy" },
+  { id: "Indulgent", label: "Indulgent", description: "A comforting treat" },
 ];
 
 export const TIME_FILTERS: ReadonlyArray<{ value: TimeFilter; label: string; detail: string }> = [
-  { value: 15, label: "15 min", detail: "Quick" },
-  { value: 30, label: "30 min", detail: "Easy" },
-  { value: 45, label: "45 min", detail: "Relaxed" },
-  { value: 60, label: "60+ min", detail: "Any pace" },
+  { value: "30 min", label: "30 min", detail: "Quick" },
+  { value: "1 hr", label: "1 hr", detail: "Standard" },
+  { value: "2 hrs", label: "2 hrs", detail: "Relaxed" },
+  { value: "All day", label: "All day", detail: "Slow cook" },
 ];
 
 const CAPTURE_SESSION_KEY = "mise.capture-preferences.v1";
 
 export function createDefaultCapturePreferences(): CapturePreferences {
-  return { ingredients: [], healthGoals: ["balanced"], maxMinutes: 30 };
+  return { ingredients: [], healthGoals: ["High protein"], timeAvailable: "1 hr" };
 }
 
 function canonicalIngredient(value: string): string {
@@ -98,9 +102,9 @@ export function toggleHealthGoal(goals: HealthGoalId[], goal: HealthGoalId): Hea
   return [...goals, goal];
 }
 
-export function selectTimeFilter(preferences: CapturePreferences, maxMinutes: number): CapturePreferences {
-  const isSupported = TIME_FILTERS.some((option) => option.value === maxMinutes);
-  return isSupported ? { ...preferences, maxMinutes: maxMinutes as TimeFilter } : preferences;
+export function selectTimeFilter(preferences: CapturePreferences, timeAvailable: string): CapturePreferences {
+  const isSupported = TIME_AVAILABLE_OPTIONS.includes(timeAvailable as TimeFilter);
+  return isSupported ? { ...preferences, timeAvailable: timeAvailable as TimeFilter } : preferences;
 }
 
 export function hasCaptureIngredients(preferences: CapturePreferences): boolean {
@@ -114,16 +118,16 @@ export function loadCapturePreferences(): CapturePreferences {
     if (!stored) return createDefaultCapturePreferences();
     const parsed = JSON.parse(stored) as Partial<CapturePreferences>;
     const validGoals = Array.isArray(parsed.healthGoals)
-      ? parsed.healthGoals.filter((goal): goal is HealthGoalId => HEALTH_GOALS.some((option) => option.id === goal))
+      ? parsed.healthGoals.filter((goal): goal is HealthGoalId => HEALTH_TAGS.includes(goal as HealthGoalId))
       : [];
-    const validMinutes = TIME_FILTERS.some((option) => option.value === parsed.maxMinutes) ? parsed.maxMinutes as TimeFilter : 30;
+    const validTime = TIME_AVAILABLE_OPTIONS.includes(parsed.timeAvailable as TimeFilter) ? parsed.timeAvailable as TimeFilter : "1 hr";
     const validIngredients = Array.isArray(parsed.ingredients)
       ? parsed.ingredients.filter((ingredient): ingredient is string => typeof ingredient === "string" && ingredient.trim().length > 0)
       : [];
     return {
       ingredients: validIngredients,
-      healthGoals: validGoals.length > 0 ? validGoals : ["balanced"],
-      maxMinutes: validMinutes,
+      healthGoals: validGoals.length > 0 ? validGoals : ["High protein"],
+      timeAvailable: validTime,
     };
   } catch {
     return createDefaultCapturePreferences();

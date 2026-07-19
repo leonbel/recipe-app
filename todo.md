@@ -1,0 +1,60 @@
+# Project TODO
+
+- [x] Initialise the managed React 19, Tailwind CSS 4, TypeScript, and Express project scaffold.
+- [x] Configure a browser Supabase client using environment variables only.
+- [x] Add typed environment validation and a safe missing-configuration state for Supabase.
+- [x] Establish routes for login, signup, capture, recipe results, recipe detail, cooking mode, and meal history.
+- [x] Create mobile-first placeholder screens and navigation escape routes for every planned route.
+- [x] Add Vitest coverage for Supabase configuration and the route registry.
+- [x] Verify the Step 1 foundation with type checking, tests, production build, and responsive screenshots.
+- [x] Stop after Step 1 and deliver the foundation for user review.
+- [x] Build Supabase email/password login and signup flows.
+- [x] Build Google OAuth through Supabase and redirect authenticated users to capture.
+- [x] Add session-aware route protection and auth callback handling for the capture screen.
+- [x] Add authentication validation, loading, error, and confirmation states.
+- [x] Add Vitest coverage for authentication helpers and redirect logic.
+- [x] Verify the Step 2 authentication experience and pause for review.
+- [ ] Enable the Google provider in Supabase Auth before testing live Google sign-in; the current project reports it disabled.
+- [x] Present Google OAuth as the preferred primary option on login and signup, with email/password secondary.
+- [x] Verify the revised Google-first authentication layout on desktop and mobile.
+- [x] Add a Skip for now action to login and signup so visitors can enter capture without an account.
+- [x] Permit guest access to capture while retaining authentication for account-specific areas.
+- [x] Verify the guest skip flow, guest capture state, and responsive auth layout.
+- [x] Add a subtle food-themed background image to login and signup without reducing form readability.
+- [x] Strengthen login and signup cards with a frosted-glass treatment.
+- [x] Verify the refined authentication screens at desktop and mobile breakpoints.
+- [x] Build the capture screen with an ingredient input, autocomplete, selected chips, and quick-add suggestions.
+- [x] Build health-goal toggles, a time filter, and a Find Recipes call to action.
+- [x] Preserve capture preferences during the active browser session and clearly distinguish guest versus signed-in state.
+- [x] Keep recipe discovery, details, and cooking accessible to guests while reserving history for signed-in users.
+- [x] Add Vitest coverage for ingredient, health-goal, time-filter, and submission helpers.
+- [x] Verify the Step 3 capture experience at desktop and mobile breakpoints.
+- [x] Add the native Gemini API credential required for the exact gemini-2.0-flash integration.
+- [x] Define the supplied strict recipe JSON schema and prompt template as server-side generation contracts.
+- [x] Implement a server-side Gemini gemini-2.0-flash procedure with validated structured responses.
+- [x] Wire Find Recipes to the generation procedure with loading, error, and handoff states.
+- [x] Update health tags exactly to High protein, Gut-friendly, Low carb, High iron, Low fat, Clean carb, and Indulgent.
+- [x] Update time options exactly to 30 min, 1 hr, 2 hrs, and All day.
+- [x] Add Vitest coverage for recipe schema validation, prompt construction, and capture option changes.
+- [ ] Verify a live Gemini recipe generation response and the responsive capture experience.
+- [ ] Enable positive Gemini `generateContent` quota or billing for the configured native API key; live requests currently return HTTP 429 with free-tier request limit 0.
+- [x] Inspect the current build and deployment configuration for Vercel serverless compatibility.
+- [x] Add an `api/recipes.ts` Vercel serverless endpoint that validates recipe requests and returns JSON on every response path.
+- [x] Route deployed recipe generation through the Vercel endpoint while preserving the local tRPC workflow.
+- [x] Add tests for Vercel request validation, Gemini success responses, and JSON error responses.
+- [x] Verify Vercel build compatibility and document the required environment/runtime behavior.
+- [ ] Add a schema-valid Vercel fallback recipe set for all Gemini generation failures.
+- [ ] Use the requested Moroccan Chicken Tagine, Spanish Chicken and Chickpea, Tuscan Braised Chicken, and Indian Butter Chicken fallback recipes.
+- [ ] Return fallback data as a successful JSON recipe response so downstream UI testing can proceed.
+- [ ] Add tests for quota, provider, and unexpected Gemini failures using the fallback response.
+- [ ] Verify the Vercel fallback build and client results handoff.
+- [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
+- [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
+- [ ] Verify the pushed GitHub revision is ready for Vercel deployment.
+- [ ] Re-authorise GitHub with repository contents-write access; the active token can read repository metadata but receives HTTP 403 on write operations.
+- [ ] Integrate Gemini recipe generation with the specified structured JSON schema.
+- [ ] Build recipe results with frosted-glass cards and Pollinations.ai images.
+- [ ] Build recipe detail with live servings and ingredient quantity scaling.
+- [ ] Build full-screen cooking mode with per-step countdown timers.
+- [ ] Build post-cook rating prompt and meal logging.
+- [ ] Build searchable and filterable meal history.

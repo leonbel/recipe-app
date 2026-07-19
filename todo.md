@@ -38,6 +38,11 @@
 - [x] Add Vitest coverage for recipe schema validation, prompt construction, and capture option changes.
 - [ ] Verify a live Gemini recipe generation response and the responsive capture experience.
 - [ ] Enable positive Gemini `generateContent` quota or billing for the configured native API key; live requests currently return HTTP 429 with free-tier request limit 0.
+- [x] Inspect the current build and deployment configuration for Vercel serverless compatibility.
+- [x] Add an `api/recipes.ts` Vercel serverless endpoint that validates recipe requests and returns JSON on every response path.
+- [x] Route deployed recipe generation through the Vercel endpoint while preserving the local tRPC workflow.
+- [x] Add tests for Vercel request validation, Gemini success responses, and JSON error responses.
+- [x] Verify Vercel build compatibility and document the required environment/runtime behavior.
 - [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
 - [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
 - [ ] Verify the pushed GitHub revision is ready for Vercel deployment.

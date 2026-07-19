@@ -15,6 +15,7 @@ import {
 } from "@/lib/capture";
 import { supabase } from "@/lib/supabase";
 import { saveGeneratedRecipes } from "@/lib/generatedRecipes";
+import { generateRecipesOnVercel, shouldUseVercelRecipeEndpoint } from "@/lib/vercelRecipes";
 import { APP_ROUTES } from "@/routes";
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, Check, ChevronDown, Clock3, History, LoaderCircle, LogIn, LogOut, Plus, Sparkles, X } from "lucide-react";
@@ -71,11 +72,14 @@ export default function Home() {
     }
     setSubmissionMessage("");
     try {
-      const recipes = await generateRecipes.mutateAsync({
+      const request = {
         ingredients: preferences.ingredients,
         healthGoals: preferences.healthGoals,
         timeAvailable: preferences.timeAvailable,
-      });
+      };
+      const recipes = shouldUseVercelRecipeEndpoint()
+        ? await generateRecipesOnVercel(request)
+        : await generateRecipes.mutateAsync(request);
       saveGeneratedRecipes(recipes);
       navigate(APP_ROUTES.results);
     } catch (error) {

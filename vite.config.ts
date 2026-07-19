@@ -154,6 +154,9 @@ const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(
 
 export default defineConfig({
   plugins,
+  define: {
+    "import.meta.env.VITE_DEPLOYMENT_TARGET": JSON.stringify(process.env.VERCEL ? "vercel" : process.env.VITE_DEPLOYMENT_TARGET ?? ""),
+  },
   // Supabase's anon key is designed for browser use; RLS remains the data boundary.
   // Keep support for the existing Vercel variable names as well as VITE_* aliases.
   envPrefix: ["VITE_", "SUPABASE_"],

@@ -5,6 +5,7 @@ const { generateRecipeOptions } = vi.hoisted(() => ({ generateRecipeOptions: vi.
 vi.mock("../server/recipeGeneration", () => ({ generateRecipeOptions }));
 
 import handler from "./recipes";
+import { RecipeGenerationResponseSchema } from "../shared/recipe";
 
 type MockResponse = {
   headers: Record<string, string>;
@@ -77,12 +78,30 @@ describe("Vercel recipes API", () => {
     expect(state.body).toBe(generated);
   });
 
-  it("returns a JSON 429 when Gemini has no generation quota", async () => {
+  it("returns the requested schema-valid fallback recipes when Gemini has no quota", async () => {
     generateRecipeOptions.mockRejectedValue(new Error("The configured Gemini key has no recipe-generation quota available yet."));
     const state = createResponse();
     await handler({ method: "POST", body: validRequest }, state.response);
 
-    expect(state.statusCode).toBe(429);
-    expect(state.body).toMatchObject({ error: { code: "GEMINI_QUOTA_EXHAUSTED" } });
+    expect(state.statusCode).toBe(200);
+    expect(state.headers["content-type"]).toContain("application/json");
+    const response = RecipeGenerationResponseSchema.parse(state.body);
+    expect(response.recipes.map((recipe) => recipe.name)).toEqual([
+      "Moroccan Chicken Tagine",
+      "Spanish Chicken and Chickpea",
+      "Tuscan Braised Chicken",
+      "Indian Butter Chicken",
+    ]);
+  });
+
+  it("returns the same fallback data for unexpected Gemini failures", async () => {
+    generateRecipeOptions.mockRejectedValue(new Error("Gemini provider network failure"));
+    const state = createResponse();
+    await handler({ method: "POST", body: validRequest }, state.response);
+
+    expect(state.statusCode).toBe(200);
+    const response = RecipeGenerationResponseSchema.parse(state.body);
+    expect(response.recipes).toHaveLength(4);
+    expect(response.recipes.every((recipe) => recipe.steps.length > 0)).toBe(true);
   });
 });

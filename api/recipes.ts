@@ -1,4 +1,5 @@
 import { RecipeGenerationInputSchema } from "../shared/recipe";
+import { createFallbackRecipeResponse } from "./mockRecipes";
 import { generateRecipeOptions } from "../server/recipeGeneration";
 
 type VercelRequest = {
@@ -30,8 +31,8 @@ function parseBody(body: unknown): unknown {
 }
 
 /**
- * Vercel serverless handler for live Gemini recipe generation. It deliberately
- * sends JSON for every method, validation, provider, and unexpected error path.
+ * Vercel serverless handler for live Gemini recipe generation. It returns JSON
+ * for every response path and supplies fixture recipes if Gemini is unavailable.
  */
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== "POST") {
@@ -55,13 +56,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     const recipes = await generateRecipeOptions(parsedInput.data);
     sendJson(response, 200, recipes);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Recipe generation failed unexpectedly.";
-    const quotaExhausted = /no recipe-generation quota/i.test(message);
-    sendJson(response, quotaExhausted ? 429 : 502, {
-      error: {
-        code: quotaExhausted ? "GEMINI_QUOTA_EXHAUSTED" : "GEMINI_GENERATION_FAILED",
-        message,
-      },
-    });
+    console.warn("[Vercel recipe fallback] Gemini generation failed; returning mock recipes for UI testing.", error);
+    sendJson(response, 200, createFallbackRecipeResponse());
   }
 }

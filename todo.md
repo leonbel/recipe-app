@@ -43,6 +43,12 @@
 - [x] Route deployed recipe generation through the Vercel endpoint while preserving the local tRPC workflow.
 - [x] Add tests for Vercel request validation, Gemini success responses, and JSON error responses.
 - [x] Verify Vercel build compatibility and document the required environment/runtime behavior.
+- [x] Add a schema-valid Vercel fallback recipe set for all Gemini generation failures.
+- [x] Use the requested Moroccan Chicken Tagine, Spanish Chicken and Chickpea, Tuscan Braised Chicken, and Indian Butter Chicken fallback recipes.
+- [x] Return fallback data as a successful JSON recipe response so downstream UI testing can proceed.
+- [x] Add tests for quota, provider, and unexpected Gemini failures using the fallback response.
+- [x] Verify the Vercel fallback build and client results handoff.
+- [x] Confirm the Vercel client fetch helper accepts a successful schema-valid fallback recipe payload.
 - [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
 - [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
 - [ ] Verify the pushed GitHub revision is ready for Vercel deployment.

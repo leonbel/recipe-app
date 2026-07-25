@@ -1,6 +1,5 @@
-import { RecipeGenerationInputSchema } from "../shared/recipe";
+import { RecipeGenerationInputSchema, type RecipeGenerationInput } from "../shared/recipe";
 import { createFallbackRecipeResponse } from "./mockRecipes";
-import { generateRecipeOptions } from "../server/recipeGeneration";
 
 type VercelRequest = {
   method?: string;
@@ -30,6 +29,18 @@ function parseBody(body: unknown): unknown {
   }
 }
 
+async function generateOrFallback(input: RecipeGenerationInput) {
+  try {
+    // Keep the Gemini module inside the protected boundary so a function-load
+    // failure cannot bypass the successful mock-recipe response.
+    const { generateRecipeOptions } = await import("../server/recipeGeneration");
+    return await generateRecipeOptions(input);
+  } catch {
+    console.warn("[Vercel recipe fallback] Serving fixture recipes after an unavailable Gemini generation request.");
+    return createFallbackRecipeResponse();
+  }
+}
+
 /**
  * Vercel serverless handler for live Gemini recipe generation. It returns JSON
  * for every response path and supplies fixture recipes if Gemini is unavailable.
@@ -52,11 +63,6 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return;
   }
 
-  try {
-    const recipes = await generateRecipeOptions(parsedInput.data);
-    sendJson(response, 200, recipes);
-  } catch (error) {
-    console.warn("[Vercel recipe fallback] Gemini generation failed; returning mock recipes for UI testing.", error);
-    sendJson(response, 200, createFallbackRecipeResponse());
-  }
+  const recipes = await generateOrFallback(parsedInput.data);
+  sendJson(response, 200, recipes);
 }

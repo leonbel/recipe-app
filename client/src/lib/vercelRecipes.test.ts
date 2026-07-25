@@ -3,13 +3,14 @@ import { createFallbackRecipeResponse } from "../../../api/mockRecipes";
 import { generateRecipesOnVercel, shouldUseVercelRecipeEndpoint } from "./vercelRecipes";
 
 describe("Vercel recipe endpoint selection", () => {
-  it("uses the serverless endpoint for Vercel builds and Vercel preview hostnames", () => {
-    expect(shouldUseVercelRecipeEndpoint("vercel", "example.com")).toBe(true);
-    expect(shouldUseVercelRecipeEndpoint("", "recipe-app.vercel.app")).toBe(true);
+  it("uses the serverless endpoint for Vercel builds, preview hosts, and custom-domain production builds", () => {
+    expect(shouldUseVercelRecipeEndpoint("vercel", "example.com", false)).toBe(true);
+    expect(shouldUseVercelRecipeEndpoint("", "recipe-app.vercel.app", false)).toBe(true);
+    expect(shouldUseVercelRecipeEndpoint("", "recipes.example.com", true)).toBe(true);
   });
 
   it("preserves the local tRPC flow outside Vercel", () => {
-    expect(shouldUseVercelRecipeEndpoint("", "localhost")).toBe(false);
+    expect(shouldUseVercelRecipeEndpoint("", "localhost", false)).toBe(false);
   });
 
   it("accepts a successful schema-valid fallback response from the Vercel endpoint", async () => {

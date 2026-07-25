@@ -10,8 +10,11 @@ const VERCEL_RECIPES_ENDPOINT = "/api/recipes";
 export function shouldUseVercelRecipeEndpoint(
   deploymentTarget = import.meta.env.VITE_DEPLOYMENT_TARGET,
   hostname = typeof window === "undefined" ? "" : window.location.hostname,
+  isProduction = import.meta.env.PROD,
 ): boolean {
-  return deploymentTarget === "vercel" || hostname.endsWith(".vercel.app");
+  // Vercel custom domains do not end in .vercel.app. Any production build must
+  // therefore use the JSON serverless endpoint; local development stays on tRPC.
+  return isProduction || deploymentTarget === "vercel" || hostname.endsWith(".vercel.app");
 }
 
 function extractErrorMessage(payload: unknown): string | null {

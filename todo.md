@@ -49,6 +49,10 @@
 - [x] Add tests for quota, provider, and unexpected Gemini failures using the fallback response.
 - [x] Verify the Vercel fallback build and client results handoff.
 - [x] Confirm the Vercel client fetch helper accepts a successful schema-valid fallback recipe payload.
+- [x] Ensure every Gemini failure is silently caught inside `api/recipes.ts` and converted to HTTP 200 fallback JSON.
+- [x] Ensure all deployed production clients use `/api/recipes`, including custom Vercel domains.
+- [x] Add regression coverage proving quota and unexpected failures never expose an error payload to the client.
+- [x] Verify the corrected transparent fallback build before Vercel redeployment.
 - [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
 - [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
 - [ ] Verify the pushed GitHub revision is ready for Vercel deployment.

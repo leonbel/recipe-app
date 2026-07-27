@@ -1,7 +1,7 @@
-import { pollinationsFoodImageUrl, recipeResultId } from "@/lib/recipePresentation";
+import { fallbackFoodImageUrl, pollinationsFoodImageUrl, recipeResultId } from "@/lib/recipePresentation";
 import { recipeDetailPath } from "@/routes";
 import type { Recipe } from "@shared/recipe";
-import { ArrowRight, Bookmark, Clock3, ShoppingBasket, Sparkles, UtensilsCrossed } from "lucide-react";
+import { ArrowRight, Bookmark, Clock3, ShoppingBasket, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 
@@ -12,19 +12,18 @@ export default function RecipeResultCard({ recipe }: RecipeResultCardProps) {
   const [saved, setSaved] = useState(false);
   const highMatch = recipe.score >= 75;
   const detailPath = recipeDetailPath(recipeResultId(recipe));
+  const imageSource = imageFailed ? fallbackFoodImageUrl(recipe.name) : pollinationsFoodImageUrl(recipe.name);
 
   return (
     <article className="group relative isolate min-h-[30rem] overflow-hidden rounded-[2rem] border border-white/15 bg-[#1a1b18] shadow-[0_22px_65px_rgba(0,0,0,0.42)]">
-      {!imageFailed ? (
-        <img
-          src={pollinationsFoodImageUrl(recipe.name)}
-          alt={`${recipe.name}, food photography`}
-          className="absolute inset-0 -z-20 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
-          onError={() => setImageFailed(true)}
-        />
-      ) : (
-        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_18%_10%,rgba(218,140,111,0.38),transparent_34%),radial-gradient(circle_at_90%_94%,rgba(186,213,154,0.28),transparent_38%),linear-gradient(145deg,#282b22,#151611)]" />
-      )}
+      <img
+        src={imageSource}
+        alt={`${recipe.name}, food photography`}
+        className="absolute inset-0 -z-20 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
+        onError={() => {
+          if (!imageFailed) setImageFailed(true);
+        }}
+      />
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(11,12,10,0.22)_0%,rgba(11,12,10,0.72)_60%,rgba(11,12,10,0.92)_100%)]" />
       <div className="absolute inset-0 rounded-[2rem] bg-[#10110f]/46 backdrop-blur-[12px]" />
 
@@ -54,8 +53,6 @@ export default function RecipeResultCard({ recipe }: RecipeResultCardProps) {
               <div className="mt-2 flex flex-wrap gap-1.5">{recipe.missing_ingredients.map((ingredient) => <span key={ingredient} className="rounded-full border border-[#f4c1ad]/30 bg-black/10 px-2 py-1 text-xs">{ingredient}</span>)}</div>
             </section>
           )}
-
-          {!imageFailed ? null : <p className="mt-4 flex items-center gap-2 text-xs text-white/50"><UtensilsCrossed className="size-3.5" />Food image is loading again soon.</p>}
 
           <Link href={detailPath} className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#f5f4ed] px-5 text-sm font-semibold text-[#10110f] transition hover:bg-white active:scale-[0.98]">
             View recipe <ArrowRight className="size-4" />

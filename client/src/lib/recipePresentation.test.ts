@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pollinationsFoodImageUrl, recipeResultId, visibleRecipes } from "./recipePresentation";
+import { fallbackFoodImageUrl, pollinationsFoodImageUrl, recipeResultId, visibleRecipes } from "./recipePresentation";
 import { recipeDetailPath } from "@/routes";
 
 describe("recipe results presentation", () => {
@@ -7,6 +7,10 @@ describe("recipe results presentation", () => {
     expect(pollinationsFoodImageUrl("Moroccan Chicken Tagine")).toBe(
       "https://image.pollinations.ai/prompt/Moroccan+Chicken+Tagine+food+photography+top+down+view+matte+ceramic+bowl+wooden+surface+warm+natural+window+light+soft+shadows+minimal+styling+editorial+quality?width=800&height=600&nologo=true",
     );
+    expect(fallbackFoodImageUrl("Green Herb Salmon Bowl")).toBe("/manus-storage/mise-fallback-salmon-bowl_262e4a70.jpg");
+    expect(fallbackFoodImageUrl("Crispy Tofu Sesame Noodles")).toBe("/manus-storage/mise-fallback-tofu-noodles_c6aef288.jpg");
+    expect(fallbackFoodImageUrl("Charred Broccoli Frittata")).toBe("/manus-storage/mise-fallback-frittata_2515a97c.jpg");
+    expect(fallbackFoodImageUrl("Moroccan Chicken Tagine")).toBe("/manus-storage/mise-fallback-harissa-chicken_d6873920.jpg");
   });
 
   it("sorts recipes by score and can retain only no-shopping choices", () => {

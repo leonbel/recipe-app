@@ -5,15 +5,16 @@ import { ArrowRight, Bookmark, Clock3, ShoppingBasket, Sparkles } from "lucide-r
 import { useState } from "react";
 import { Link } from "wouter";
 
-type RecipeResultCardProps = { recipe: Recipe; forceFallback?: boolean; forceUnavailable?: boolean };
+type RecipeResultCardProps = { recipe: Recipe; forceFallback?: boolean; forceUnavailable?: boolean; forceImageErrorChain?: boolean };
 type ImageStatus = "primary" | "fallback" | "unavailable";
 
-export default function RecipeResultCard({ recipe, forceFallback = false, forceUnavailable = false }: RecipeResultCardProps) {
+export default function RecipeResultCard({ recipe, forceFallback = false, forceUnavailable = false, forceImageErrorChain = false }: RecipeResultCardProps) {
   const [imageStatus, setImageStatus] = useState<ImageStatus>(() => (forceUnavailable ? "unavailable" : forceFallback ? "fallback" : "primary"));
   const [saved, setSaved] = useState(false);
   const highMatch = recipe.score >= 75;
   const detailPath = recipeDetailPath(recipeResultId(recipe));
-  const imageSource = imageStatus === "primary" ? pollinationsFoodImageUrl(recipe.name) : imageStatus === "fallback" ? fallbackFoodImageUrl(recipe.name) : null;
+  const resolvedImageSource = imageStatus === "primary" ? pollinationsFoodImageUrl(recipe.name) : imageStatus === "fallback" ? fallbackFoodImageUrl(recipe.name) : null;
+  const imageSource = forceImageErrorChain && resolvedImageSource ? "/__mise_image_probe_not_found__.jpg" : resolvedImageSource;
 
   function handleImageError() {
     setImageStatus((current) => current === "primary" ? "fallback" : "unavailable");

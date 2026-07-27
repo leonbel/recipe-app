@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fallbackFoodImageUrl, isFallbackImagePreview, isUnavailableImagePreview, pollinationsFoodImageUrl, recipeResultId, visibleRecipes } from "./recipePresentation";
+import { fallbackFoodImageUrl, isFallbackImagePreview, isImageErrorChainPreview, isUnavailableImagePreview, pollinationsFoodImageUrl, recipeResultId, visibleRecipes } from "./recipePresentation";
 import { recipeDetailPath } from "@/routes";
 
 describe("recipe results presentation", () => {
@@ -15,6 +15,8 @@ describe("recipe results presentation", () => {
     expect(isFallbackImagePreview("?preview=recipes")).toBe(false);
     expect(isUnavailableImagePreview("?preview=recipes&imageUnavailable=1")).toBe(true);
     expect(isUnavailableImagePreview("?preview=recipes")).toBe(false);
+    expect(isImageErrorChainPreview("?preview=recipes&imageErrorChain=1")).toBe(true);
+    expect(isImageErrorChainPreview("?preview=recipes")).toBe(false);
   });
 
   it("sorts recipes by score and can retain only no-shopping choices", () => {

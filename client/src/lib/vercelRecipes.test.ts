@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createFallbackRecipeResponse } from "../../../api/mockRecipes";
+import { createFallbackRecipeResponse } from "../../../api/recipes";
 import { generateRecipesOnVercel, shouldUseVercelRecipeEndpoint } from "./vercelRecipes";
 
 describe("Vercel recipe endpoint selection", () => {

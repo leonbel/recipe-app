@@ -53,6 +53,12 @@
 - [x] Ensure all deployed production clients use `/api/recipes`, including custom Vercel domains.
 - [x] Add regression coverage proving quota and unexpected failures never expose an error payload to the client.
 - [x] Verify the corrected transparent fallback build before Vercel redeployment.
+- [x] Remove all runtime project imports from `api/recipes.ts` so Vercel can bundle it independently.
+- [x] Inline recipe validation, Gemini generation, and fallback fixtures inside the Vercel function.
+- [x] Add regression tests proving the Vercel function does not depend on unresolved shared or server modules.
+- [x] Verify the standalone serverless response contract and Vercel build before redeployment.
+- [x] Analyze the delivery process to date against Spec-Driven Development principles.
+- [x] Prepare actionable specification-led recommendations for the remaining recipe-app stages.
 - [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
 - [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
 - [ ] Verify the pushed GitHub revision is ready for Vercel deployment.

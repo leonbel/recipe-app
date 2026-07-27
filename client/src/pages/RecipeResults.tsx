@@ -1,6 +1,6 @@
 import RecipeResultCard from "@/components/RecipeResultCard";
 import { loadGeneratedRecipes } from "@/lib/generatedRecipes";
-import { type RecipeResultsFilter, visibleRecipes } from "@/lib/recipePresentation";
+import { isFallbackImagePreview, isUnavailableImagePreview, type RecipeResultsFilter, visibleRecipes } from "@/lib/recipePresentation";
 import { APP_ROUTES } from "@/routes";
 import type { RecipeGenerationResponse } from "@shared/recipe";
 import { ArrowLeft, ArrowRight, ChefHat, SlidersHorizontal, Sparkles } from "lucide-react";
@@ -70,7 +70,10 @@ const RESULTS_PREVIEW: RecipeGenerationResponse = {
 };
 
 export default function RecipeResults() {
-  const showPreview = import.meta.env.DEV && new URLSearchParams(window.location.search).get("preview") === "recipes";
+  const query = new URLSearchParams(window.location.search);
+  const showPreview = import.meta.env.DEV && query.get("preview") === "recipes";
+  const forceFallback = import.meta.env.DEV && isFallbackImagePreview(window.location.search);
+  const forceUnavailable = import.meta.env.DEV && isUnavailableImagePreview(window.location.search);
   const recipes = useMemo(() => (showPreview ? RESULTS_PREVIEW.recipes : loadGeneratedRecipes()?.recipes ?? []), [showPreview]);
   const [filter, setFilter] = useState<RecipeResultsFilter>("all");
   const displayedRecipes = useMemo(() => visibleRecipes(recipes, filter), [filter, recipes]);
@@ -104,7 +107,7 @@ export default function RecipeResults() {
           ) : displayedRecipes.length === 0 ? (
             <div className="mt-10 rounded-[2rem] border border-white/10 bg-white/[0.045] p-7 text-center backdrop-blur-xl"><p className="font-display text-3xl">Nothing without a shop today.</p><p className="mt-3 text-sm text-white/50">Try all recipes to see the full set of ideas.</p><button type="button" onClick={() => setFilter("all")} className="mt-5 text-sm font-semibold text-[#bad59a] underline underline-offset-4">Show all recipes</button></div>
           ) : (
-            <div className="mt-8 grid gap-5 md:grid-cols-2">{displayedRecipes.map((recipe) => <RecipeResultCard key={`${recipe.name}-${recipe.score}`} recipe={recipe} />)}</div>
+            <div className="mt-8 grid gap-5 md:grid-cols-2">{displayedRecipes.map((recipe) => <RecipeResultCard key={`${recipe.name}-${recipe.score}-${forceUnavailable ? "unavailable" : forceFallback ? "fallback" : "primary"}`} recipe={recipe} forceFallback={forceFallback} forceUnavailable={forceUnavailable} />)}</div>
           )}
         </section>
       </div>

@@ -5,25 +5,32 @@ import { ArrowRight, Bookmark, Clock3, ShoppingBasket, Sparkles } from "lucide-r
 import { useState } from "react";
 import { Link } from "wouter";
 
-type RecipeResultCardProps = { recipe: Recipe };
+type RecipeResultCardProps = { recipe: Recipe; forceFallback?: boolean; forceUnavailable?: boolean };
+type ImageStatus = "primary" | "fallback" | "unavailable";
 
-export default function RecipeResultCard({ recipe }: RecipeResultCardProps) {
-  const [imageFailed, setImageFailed] = useState(false);
+export default function RecipeResultCard({ recipe, forceFallback = false, forceUnavailable = false }: RecipeResultCardProps) {
+  const [imageStatus, setImageStatus] = useState<ImageStatus>(() => (forceUnavailable ? "unavailable" : forceFallback ? "fallback" : "primary"));
   const [saved, setSaved] = useState(false);
   const highMatch = recipe.score >= 75;
   const detailPath = recipeDetailPath(recipeResultId(recipe));
-  const imageSource = imageFailed ? fallbackFoodImageUrl(recipe.name) : pollinationsFoodImageUrl(recipe.name);
+  const imageSource = imageStatus === "primary" ? pollinationsFoodImageUrl(recipe.name) : imageStatus === "fallback" ? fallbackFoodImageUrl(recipe.name) : null;
+
+  function handleImageError() {
+    setImageStatus((current) => current === "primary" ? "fallback" : "unavailable");
+  }
 
   return (
     <article className="group relative isolate min-h-[30rem] overflow-hidden rounded-[2rem] border border-white/15 bg-[#1a1b18] shadow-[0_22px_65px_rgba(0,0,0,0.42)]">
-      <img
-        src={imageSource}
-        alt={`${recipe.name}, food photography`}
-        className="absolute inset-0 -z-20 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
-        onError={() => {
-          if (!imageFailed) setImageFailed(true);
-        }}
-      />
+      {imageSource ? (
+        <img
+          src={imageSource}
+          alt={`${recipe.name}, food photography`}
+          className="absolute inset-0 -z-20 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
+          onError={handleImageError}
+        />
+      ) : (
+        <div aria-hidden="true" className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_75%_18%,rgba(186,213,154,0.32),transparent_32%),radial-gradient(circle_at_14%_78%,rgba(218,140,111,0.36),transparent_42%),linear-gradient(135deg,#25271f_0%,#151610_49%,#31251e_100%)]" />
+      )}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(11,12,10,0.22)_0%,rgba(11,12,10,0.72)_60%,rgba(11,12,10,0.92)_100%)]" />
       <div className="absolute inset-0 rounded-[2rem] bg-[#10110f]/46 backdrop-blur-[12px]" />
 

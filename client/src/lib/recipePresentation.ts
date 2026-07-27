@@ -23,6 +23,14 @@ export function fallbackFoodImageUrl(recipeName: string): string {
   return FALLBACK_FOOD_IMAGES.chicken;
 }
 
+export function isFallbackImagePreview(search: string): boolean {
+  return new URLSearchParams(search).get("imageFallback") === "1";
+}
+
+export function isUnavailableImagePreview(search: string): boolean {
+  return new URLSearchParams(search).get("imageUnavailable") === "1";
+}
+
 export function recipeResultId(recipe: Pick<Recipe, "name">): string {
   return recipe.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "recipe";
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fallbackFoodImageUrl, pollinationsFoodImageUrl, recipeResultId, visibleRecipes } from "./recipePresentation";
+import { fallbackFoodImageUrl, isFallbackImagePreview, isUnavailableImagePreview, pollinationsFoodImageUrl, recipeResultId, visibleRecipes } from "./recipePresentation";
 import { recipeDetailPath } from "@/routes";
 
 describe("recipe results presentation", () => {
@@ -11,6 +11,10 @@ describe("recipe results presentation", () => {
     expect(fallbackFoodImageUrl("Crispy Tofu Sesame Noodles")).toBe("/manus-storage/mise-fallback-tofu-noodles_c6aef288.jpg");
     expect(fallbackFoodImageUrl("Charred Broccoli Frittata")).toBe("/manus-storage/mise-fallback-frittata_2515a97c.jpg");
     expect(fallbackFoodImageUrl("Moroccan Chicken Tagine")).toBe("/manus-storage/mise-fallback-harissa-chicken_d6873920.jpg");
+    expect(isFallbackImagePreview("?preview=recipes&imageFallback=1")).toBe(true);
+    expect(isFallbackImagePreview("?preview=recipes")).toBe(false);
+    expect(isUnavailableImagePreview("?preview=recipes&imageUnavailable=1")).toBe(true);
+    expect(isUnavailableImagePreview("?preview=recipes")).toBe(false);
   });
 
   it("sorts recipes by score and can retain only no-shopping choices", () => {

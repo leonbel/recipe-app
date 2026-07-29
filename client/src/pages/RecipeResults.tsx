@@ -1,6 +1,6 @@
 import RecipeResultCard from "@/components/RecipeResultCard";
 import { loadGeneratedRecipes } from "@/lib/generatedRecipes";
-import { isFallbackImagePreview, isImageErrorChainPreview, isUnavailableImagePreview, type RecipeResultsFilter, visibleRecipes } from "@/lib/recipePresentation";
+import { isFallbackImagePreview, isImageErrorChainPreview, isPublicDesignReviewPreview, isUnavailableImagePreview, type RecipeResultsFilter, visibleRecipes } from "@/lib/recipePresentation";
 import { APP_ROUTES } from "@/routes";
 import type { RecipeGenerationResponse } from "@shared/recipe";
 import { ArrowLeft, ArrowRight, ChefHat, SlidersHorizontal, Sparkles } from "lucide-react";
@@ -71,7 +71,8 @@ const RESULTS_PREVIEW: RecipeGenerationResponse = {
 
 export default function RecipeResults() {
   const query = new URLSearchParams(window.location.search);
-  const showPreview = import.meta.env.DEV && query.get("preview") === "recipes";
+  const showDesignReview = isPublicDesignReviewPreview(window.location.search);
+  const showPreview = showDesignReview || (import.meta.env.DEV && query.get("preview") === "recipes");
   const forceFallback = import.meta.env.DEV && isFallbackImagePreview(window.location.search);
   const forceUnavailable = import.meta.env.DEV && isUnavailableImagePreview(window.location.search);
   const forceImageErrorChain = import.meta.env.DEV && isImageErrorChainPreview(window.location.search);
@@ -87,6 +88,8 @@ export default function RecipeResults() {
           <Link href={APP_ROUTES.capture} className="inline-flex items-center gap-2 text-sm text-white/58 transition hover:text-white"><ArrowLeft className="size-4" /> Kitchen</Link>
           <div className="flex items-center gap-2 font-display text-xl tracking-tight"><span className="grid size-7 place-items-center rounded-full bg-[#bad59a] text-[#10110f]"><Sparkles className="size-3.5" /></span>mise</div>
         </header>
+
+        {showDesignReview && <div role="status" className="mt-5 flex items-start gap-3 rounded-2xl border border-[#bad59a]/20 bg-[#bad59a]/[0.08] px-4 py-3 text-sm leading-6 text-white/70"><Sparkles className="mt-0.5 size-4 shrink-0 text-[#bad59a]" /><p><span className="font-semibold text-[#bad59a]">Design review preview.</span> These example recipes are shown only to review the result-card experience. Your generated recipe set remains unchanged.</p></div>}
 
         <section className="pb-14 pt-12 sm:pb-20 sm:pt-16">
           <div className="flex flex-col gap-7 border-b border-white/10 pb-8 lg:flex-row lg:items-end lg:justify-between">

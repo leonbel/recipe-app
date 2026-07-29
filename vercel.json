@@ -6,5 +6,12 @@
     "api/recipes.ts": {
       "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/signup", "destination": "/index.html" },
+    { "source": "/auth/callback", "destination": "/index.html" },
+    { "source": "/recipes/:path*", "destination": "/index.html" },
+    { "source": "/history", "destination": "/index.html" }
+  ]
 }

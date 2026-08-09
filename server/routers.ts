@@ -1,9 +1,11 @@
 import { COOKIE_NAME } from "@shared/const";
+import { MealLogInputSchema } from "@shared/mealLog";
 import { RecipeGenerationInputSchema } from "@shared/recipe";
 import { TRPCError } from "@trpc/server";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { createMealLog, listMealLogs } from "./db";
 import { generateRecipeOptions } from "./recipeGeneration";
 
 export const appRouter = router({
@@ -31,6 +33,25 @@ export const appRouter = router({
           code: "INTERNAL_SERVER_ERROR",
           message,
         });
+      }
+    }),
+  }),
+
+  meals: router({
+    create: protectedProcedure.input(MealLogInputSchema).mutation(async ({ ctx, input }) => {
+      try {
+        return await createMealLog(ctx.user.id, input);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "We could not save that meal right now.";
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message });
+      }
+    }),
+    list: protectedProcedure.query(async ({ ctx }) => {
+      try {
+        return await listMealLogs(ctx.user.id);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "We could not load meal history right now.";
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message });
       }
     }),
   }),

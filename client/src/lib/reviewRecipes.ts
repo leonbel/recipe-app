@@ -1,0 +1,106 @@
+import type { Recipe } from "@shared/recipe";
+
+/**
+ * Explicitly labeled design-review recipes. These records are only used when
+ * `?review=design` is present and never replace a visitor's generated set.
+ */
+export const REVIEW_RECIPES: Recipe[] = [
+  {
+    name: "Harissa Chicken & Chickpeas",
+    flavour: "Smoky, lemon-bright and deeply savoury with a warmly spiced finish.",
+    total_time: "35 min",
+    health_headline: "A high-protein tray bake with fibre-rich chickpeas and vitamin C from lemon.",
+    health_insights: ["Chicken provides complete protein.", "Chickpeas add fibre and iron."],
+    tags: ["High protein", "High iron"],
+    score: 96,
+    base_servings: 2,
+    missing_ingredients: ["Harissa paste"],
+    ingredients: [
+      { group: "Protein", name: "Chicken thighs", qty: 400, unit: "g" },
+      { group: "Produce", name: "Lemon", qty: 1, unit: null },
+      { group: "Produce", name: "Red onion", qty: 1, unit: null },
+      { group: "Pantry", name: "Chickpeas", qty: 400, unit: "g" },
+      { group: "Pantry", name: "Olive oil", qty: 1.5, unit: "tbsp" },
+      { group: "To buy", name: "Harissa paste", qty: 2, unit: "tsp" },
+    ],
+    steps: [
+      { order: 1, instruction: "Heat the oven to 220°C and slice the onion into slim wedges.", timer_seconds: null },
+      { order: 2, instruction: "Coat chicken, onion, chickpeas, olive oil and harissa in a roasting tray.", timer_seconds: null },
+      { order: 3, instruction: "Roast until the chicken is golden and cooked through, turning the chickpeas once.", timer_seconds: 1800 },
+      { order: 4, instruction: "Finish with lemon juice and serve straight from the warm tray.", timer_seconds: null },
+    ],
+  },
+  {
+    name: "Green Herb Salmon Bowl",
+    flavour: "Clean, citrusy and herbaceous with a crisp cucumber finish.",
+    total_time: "25 min",
+    health_headline: "Omega-3 rich salmon meets satisfying whole-grain carbohydrates for an energising meal.",
+    health_insights: ["Salmon contributes heart-supporting omega-3s.", "Greens add folate and fibre."],
+    tags: ["High protein", "Clean carb"],
+    score: 91,
+    base_servings: 2,
+    missing_ingredients: [],
+    ingredients: [
+      { group: "Protein", name: "Salmon fillets", qty: 2, unit: null },
+      { group: "Produce", name: "Cucumber", qty: 0.5, unit: null },
+      { group: "Produce", name: "Mixed herbs", qty: 25, unit: "g" },
+      { group: "Pantry", name: "Cooked brown rice", qty: 300, unit: "g" },
+      { group: "Pantry", name: "Lemon", qty: 1, unit: null },
+    ],
+    steps: [
+      { order: 1, instruction: "Warm the rice and toss it with lemon zest and half of the chopped herbs.", timer_seconds: 120 },
+      { order: 2, instruction: "Sear the salmon skin-side down in a hot pan until crisp.", timer_seconds: 360 },
+      { order: 3, instruction: "Flip the salmon briefly, then rest it while you slice the cucumber.", timer_seconds: 120 },
+      { order: 4, instruction: "Build the bowls with rice, cucumber, herbs and flaked salmon.", timer_seconds: null },
+    ],
+  },
+  {
+    name: "Crispy Tofu Sesame Noodles",
+    flavour: "Nutty sesame, crisp-edged tofu and a gentle chilli warmth.",
+    total_time: "30 min",
+    health_headline: "Plant protein and colourful vegetables make this a fibre-forward weeknight bowl.",
+    health_insights: ["Tofu offers plant-based protein.", "Vegetables provide gut-friendly prebiotic fibre."],
+    tags: ["Gut-friendly", "Clean carb"],
+    score: 84,
+    base_servings: 2,
+    missing_ingredients: ["Sesame oil", "Rice noodles"],
+    ingredients: [
+      { group: "Protein", name: "Firm tofu", qty: 280, unit: "g" },
+      { group: "Produce", name: "Spring onions", qty: 3, unit: null },
+      { group: "Produce", name: "Carrot", qty: 1, unit: null },
+      { group: "Pantry", name: "Soy sauce", qty: 2, unit: "tbsp" },
+      { group: "To buy", name: "Sesame oil", qty: 1, unit: "tsp" },
+      { group: "To buy", name: "Rice noodles", qty: 180, unit: "g" },
+    ],
+    steps: [
+      { order: 1, instruction: "Soak or cook the rice noodles according to their packet instructions.", timer_seconds: 300 },
+      { order: 2, instruction: "Sear the tofu until crisp on two sides.", timer_seconds: 600 },
+      { order: 3, instruction: "Toss noodles, carrot, spring onions, soy and sesame oil together.", timer_seconds: null },
+      { order: 4, instruction: "Fold through the tofu and serve while the edges are still crisp.", timer_seconds: null },
+    ],
+  },
+  {
+    name: "Charred Broccoli Frittata",
+    flavour: "Creamy eggs, charred greens and a peppery parmesan bite.",
+    total_time: "20 min",
+    health_headline: "A low-carb, high-protein skillet supper built around iron-rich greens.",
+    health_insights: ["Eggs provide protein and choline.", "Broccoli brings fibre and vitamin K."],
+    tags: ["Low carb", "High protein"],
+    score: 78,
+    base_servings: 2,
+    missing_ingredients: ["Parmesan"],
+    ingredients: [
+      { group: "Protein", name: "Eggs", qty: 6, unit: null },
+      { group: "Produce", name: "Broccoli", qty: 250, unit: "g" },
+      { group: "Produce", name: "Baby spinach", qty: 60, unit: "g" },
+      { group: "Pantry", name: "Olive oil", qty: 1, unit: "tbsp" },
+      { group: "To buy", name: "Parmesan", qty: 35, unit: "g" },
+    ],
+    steps: [
+      { order: 1, instruction: "Heat the grill and char the broccoli in an ovenproof skillet.", timer_seconds: 300 },
+      { order: 2, instruction: "Whisk eggs with spinach and parmesan, then pour over the broccoli.", timer_seconds: null },
+      { order: 3, instruction: "Cook gently until the edges are set, then finish under the grill.", timer_seconds: 420 },
+      { order: 4, instruction: "Rest briefly, slice and serve with black pepper.", timer_seconds: 120 },
+    ],
+  },
+];

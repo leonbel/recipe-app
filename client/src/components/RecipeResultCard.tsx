@@ -1,4 +1,4 @@
-import { fallbackFoodImageUrl, pollinationsFoodImageUrl, recipeResultId } from "@/lib/recipePresentation";
+import { fallbackFoodImageUrl, isPublicDesignReviewPreview, pollinationsFoodImageUrl, recipeResultId } from "@/lib/recipePresentation";
 import { recipeDetailPath } from "@/routes";
 import type { Recipe } from "@shared/recipe";
 import { ArrowRight, Bookmark, Clock3, ShoppingBasket, Sparkles } from "lucide-react";
@@ -12,7 +12,7 @@ export default function RecipeResultCard({ recipe, forceFallback = false, forceU
   const [imageStatus, setImageStatus] = useState<ImageStatus>(() => (forceUnavailable ? "unavailable" : forceFallback ? "fallback" : "primary"));
   const [saved, setSaved] = useState(false);
   const highMatch = recipe.score >= 75;
-  const detailPath = recipeDetailPath(recipeResultId(recipe));
+  const detailPath = `${recipeDetailPath(recipeResultId(recipe))}${isPublicDesignReviewPreview(window.location.search) ? "?review=design" : ""}`;
   const resolvedImageSource = imageStatus === "primary" ? pollinationsFoodImageUrl(recipe.name) : imageStatus === "fallback" ? fallbackFoodImageUrl(recipe.name) : null;
   const imageSource = forceImageErrorChain && resolvedImageSource ? "/__mise_image_probe_not_found__.jpg" : resolvedImageSource;
 

@@ -11,3 +11,5 @@ On 2026-07-29, the public Vercel deployment `https://recipe-7hhjvk1f4-leon-belob
 ## Public Design-Review Preview
 
 The explicit `/recipes?review=design` preview was visually verified at desktop and 375px mobile widths. It presents the approved four-card layout with full-bleed editorial food photography, legible score and cook-time pills, flavour copy, health tags, coral missing-ingredient panels, and white recipe actions. The preview is visibly labeled as design-only and does not overwrite a visitor's generated recipe session.
+
+The stable alias `https://recipe-app-leon-belobrov.vercel.app/recipes?review=design` was then opened in a separate browser session and rendered the same populated review view, including all four food-photography image elements. This confirms that the public alias now routes to the repaired deployment instead of Vercel's former `NOT_FOUND` page.

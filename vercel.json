@@ -5,6 +5,9 @@
   "functions": {
     "api/recipes.ts": {
       "maxDuration": 30
+    },
+    "api/trpc/[trpc].ts": {
+      "maxDuration": 30
     }
   },
   "rewrites": [

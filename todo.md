@@ -57,15 +57,54 @@
 - [x] Inline recipe validation, Gemini generation, and fallback fixtures inside the Vercel function.
 - [x] Add regression tests proving the Vercel function does not depend on unresolved shared or server modules.
 - [x] Verify the standalone serverless response contract and Vercel build before redeployment.
+- [x] Build Step 5 recipe results cards with the requested dark frosted-glass visual treatment.
+- [x] Add full-bleed Pollinations.ai food photography with resilient loading and fallback presentation.
+- [x] Add score pills, large dish names, italic flavours, coral missing-ingredient callouts, and white detail CTAs.
+- [x] Preserve generated recipes for detail navigation and provide a no-results recovery state.
+- [x] Add tests for result-card image URLs, ordering, and recipe detail navigation.
+- [x] Add a development-only results preview so the frosted recipe-card design can be visually verified with populated data.
+- [x] Verify the recipe results screen at desktop and mobile breakpoints before review.
+- [x] Investigate the user-reported text-only recipe-card view and confirm which application revision is active.
+- [x] Confirm that Vercel deployment `5617855888` served old GitHub commit `3c77645`, while new deployment `5622708125` successfully serves image-card commit `c7e0dd4`; sandbox browser access is protected by Vercel Authentication.
+- [x] Ensure recipe-result cards present food imagery reliably in the user-visible build, with a graceful visual fallback.
+- [x] Add durable food-photo fallback assets to recipe cards so an external image-service failure never produces text-only cards.
+- [x] Re-verify the corrected populated results view on desktop and mobile.
+- [x] Verify the refreshed GitHub credential can update `leonbel/recipe-app` and publish the completed image-card revision to `main`.
+- [x] Confirm Vercel deploys the image-card revision and no longer serves the text-only placeholder page.
+- [x] Force the recipe cards into their fallback-image path in a browser-visible preview and verify desktop/mobile rendering.
+- [x] Add a final non-image visual safety net if both primary and generated fallback image sources fail.
+- [x] Document the accepted production-validation path while Vercel Authentication blocks sandbox visual access.
+- [x] Exercise the full primary-to-generated-to-gradient image-error chain in a browser-visible preview at desktop and mobile sizes.
+- [x] Capture fresh desktop and mobile screenshots of the normal populated primary-image results view after finalizing image states.
+- [x] Verify the final public production page directly after deployment, replacing the no-longer-needed protected-page user confirmation.
+- [x] Investigate why the supplied Vercel deployment URL returns 404 on the user's mobile browser.
+- [x] Identify or repair the correct public production alias and recipe-results route for user validation.
+- [x] Diagnose why the successful Vercel deployment returns a real 404 after access protection is disabled.
+- [x] Repair the Vercel build output and SPA routing configuration, then verify the public recipe-results route before requesting another user test.
+- [x] Provide an explicitly labeled public design-review preview of populated recipe cards without changing normal session-based results behavior.
+- [x] Verify the public review-preview route displays food imagery on desktop and mobile after the Vercel routing repair.
 - [x] Analyze the delivery process to date against Spec-Driven Development principles.
 - [x] Prepare actionable specification-led recommendations for the remaining recipe-app stages.
 - [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
-- [ ] Publish the current reviewed application code to leonbel/recipe-app on main.
-- [ ] Verify the pushed GitHub revision is ready for Vercel deployment.
-- [ ] Re-authorise GitHub with repository contents-write access; the active token can read repository metadata but receives HTTP 403 on write operations.
+- [x] Publish the current reviewed application code to leonbel/recipe-app on main.
+- [x] Verify the pushed GitHub revision is ready for Vercel deployment.
+- [x] Re-authorise GitHub with repository contents-write access; the active token can read repository metadata but receives HTTP 403 on write operations.
 - [ ] Integrate Gemini recipe generation with the specified structured JSON schema.
-- [ ] Build recipe results with frosted-glass cards and Pollinations.ai images.
-- [ ] Build recipe detail with live servings and ingredient quantity scaling.
-- [ ] Build full-screen cooking mode with per-step countdown timers.
-- [ ] Build post-cook rating prompt and meal logging.
-- [ ] Build searchable and filterable meal history.
+- [x] Build recipe results with frosted-glass cards and Pollinations.ai images.
+- [x] Build recipe detail with live servings and ingredient quantity scaling.
+- [x] Build full-screen cooking mode with per-step countdown timers.
+- [x] Build post-cook rating prompt and durable account-backed meal logging.
+- [x] Build searchable and filterable account-backed meal history.
+- [x] Define the persisted meal-log model and migration for user-owned cooked recipes, ratings, notes, and timestamps.
+- [x] Implement recipe-detail data loading, dynamic servings controls, and proportional ingredient quantity formatting.
+- [x] Implement a responsive recipe-detail page with hero imagery, method, metadata, and a transition into cooking mode.
+- [x] Implement full-screen cooking mode with ordered steps, active-step progression, and independently controllable countdown timers.
+- [x] Implement a post-cook rating, notes, and durable meal-log completion flow with signed-in and guest-safe behavior.
+- [x] Implement authenticated meal-history search, filters, empty states, and recipe revisit actions.
+- [x] Add end-to-end unit coverage for scaling, timer, meal-log, and meal-history helpers and procedures.
+- [ ] Run one final signed-in browser acceptance test for post-cook save and meal-history display after a Supabase login.
+- [x] Wire signed-in post-cook saving to the real persisted meal-log backend with loading, error, and success handling.
+- [x] Load signed-in meal history from the real persisted meal-log backend while retaining guest-safe behavior.
+- [ ] Forward Supabase access tokens through the tRPC client and resolve them into protected backend users.
+- [ ] Publish the current validated full-build release to `leonbel/recipe-app` on GitHub `main` without creating a ZIP.
+- [ ] Verify `recipe-app-ten-lyart.vercel.app` serves the updated populated recipe-results design and current app routes.

@@ -2,7 +2,7 @@ import RecipeResultCard from "@/components/RecipeResultCard";
 import { loadGeneratedRecipes } from "@/lib/generatedRecipes";
 import { isFallbackImagePreview, isImageErrorChainPreview, isPublicDesignReviewPreview, isUnavailableImagePreview, type RecipeResultsFilter, visibleRecipes } from "@/lib/recipePresentation";
 import { APP_ROUTES } from "@/routes";
-import type { RecipeGenerationResponse } from "@shared/recipe";
+import { REVIEW_RECIPES } from "@/lib/reviewRecipes";
 import { ArrowLeft, ArrowRight, ChefHat, SlidersHorizontal, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
@@ -12,63 +12,6 @@ const filters: Array<{ id: RecipeResultsFilter; label: string }> = [
   { id: "no-shopping", label: "No shopping needed" },
 ];
 
-const RESULTS_PREVIEW: RecipeGenerationResponse = {
-  recipes: [
-    {
-      name: "Harissa Chicken & Chickpeas",
-      flavour: "Smoky, lemon-bright and deeply savoury with a warmly spiced finish.",
-      total_time: "35 min",
-      health_headline: "A high-protein tray bake with fibre-rich chickpeas and vitamin C from lemon.",
-      health_insights: ["Chicken provides complete protein.", "Chickpeas add fibre and iron."],
-      tags: ["High protein", "High iron"],
-      score: 96,
-      base_servings: 2,
-      missing_ingredients: ["Harissa paste"],
-      ingredients: [{ group: "Protein", name: "Chicken thighs", qty: 400, unit: "g" }],
-      steps: [{ order: 1, instruction: "Roast the chicken and chickpeas until golden.", timer_seconds: 1800 }],
-    },
-    {
-      name: "Green Herb Salmon Bowl",
-      flavour: "Clean, citrusy and herbaceous with a crisp cucumber finish.",
-      total_time: "25 min",
-      health_headline: "Omega-3 rich salmon meets satisfying whole-grain carbohydrates for an energising meal.",
-      health_insights: ["Salmon contributes heart-supporting omega-3s.", "Greens add folate and fibre."],
-      tags: ["High protein", "Clean carb"],
-      score: 91,
-      base_servings: 2,
-      missing_ingredients: [],
-      ingredients: [{ group: "Protein", name: "Salmon fillets", qty: 2, unit: null }],
-      steps: [{ order: 1, instruction: "Sear the salmon until just cooked through.", timer_seconds: 480 }],
-    },
-    {
-      name: "Crispy Tofu Sesame Noodles",
-      flavour: "Nutty sesame, crisp-edged tofu and a gentle chilli warmth.",
-      total_time: "30 min",
-      health_headline: "Plant protein and colourful vegetables make this a fibre-forward weeknight bowl.",
-      health_insights: ["Tofu offers plant-based protein.", "Vegetables provide gut-friendly prebiotic fibre."],
-      tags: ["Gut-friendly", "Clean carb"],
-      score: 84,
-      base_servings: 2,
-      missing_ingredients: ["Sesame oil", "Rice noodles"],
-      ingredients: [{ group: "Protein", name: "Firm tofu", qty: 280, unit: "g" }],
-      steps: [{ order: 1, instruction: "Crisp the tofu in a hot pan.", timer_seconds: 600 }],
-    },
-    {
-      name: "Charred Broccoli Frittata",
-      flavour: "Creamy eggs, charred greens and a peppery parmesan bite.",
-      total_time: "20 min",
-      health_headline: "A low-carb, high-protein skillet supper built around iron-rich greens.",
-      health_insights: ["Eggs provide protein and choline.", "Broccoli brings fibre and vitamin K."],
-      tags: ["Low carb", "High protein"],
-      score: 78,
-      base_servings: 2,
-      missing_ingredients: ["Parmesan"],
-      ingredients: [{ group: "Protein", name: "Eggs", qty: 6, unit: null }],
-      steps: [{ order: 1, instruction: "Bake the frittata until puffed and set.", timer_seconds: 720 }],
-    },
-  ],
-};
-
 export default function RecipeResults() {
   const query = new URLSearchParams(window.location.search);
   const showDesignReview = isPublicDesignReviewPreview(window.location.search);
@@ -76,7 +19,7 @@ export default function RecipeResults() {
   const forceFallback = import.meta.env.DEV && isFallbackImagePreview(window.location.search);
   const forceUnavailable = import.meta.env.DEV && isUnavailableImagePreview(window.location.search);
   const forceImageErrorChain = import.meta.env.DEV && isImageErrorChainPreview(window.location.search);
-  const recipes = useMemo(() => (showPreview ? RESULTS_PREVIEW.recipes : loadGeneratedRecipes()?.recipes ?? []), [showPreview]);
+  const recipes = useMemo(() => (showPreview ? REVIEW_RECIPES : loadGeneratedRecipes()?.recipes ?? []), [showPreview]);
   const [filter, setFilter] = useState<RecipeResultsFilter>("all");
   const displayedRecipes = useMemo(() => visibleRecipes(recipes, filter), [filter, recipes]);
 

@@ -1,6 +1,8 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, mealLogs, users } from "../drizzle/schema";
+import { MealLogInputSchema, type MealLogInput } from "../shared/mealLog";
+import { RecipeSchema } from "../shared/recipe";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +91,49 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+export async function createMealLog(userId: number, input: MealLogInput) {
+  const db = await getDb();
+  if (!db) throw new Error("Meal history is not available right now.");
+
+  const normalized = MealLogInputSchema.parse(input);
+  const cookedAt = normalized.cookedAt ? new Date(normalized.cookedAt) : new Date();
+  const recipeId = normalized.recipe.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+  const result = await db.insert(mealLogs).values({
+    userId,
+    recipeId,
+    recipeName: normalized.recipe.name,
+    recipeData: JSON.stringify(normalized.recipe),
+    servings: normalized.servings,
+    rating: normalized.rating ?? null,
+    notes: normalized.notes?.trim() || null,
+    cookedAt,
+  });
+
+  return {
+    id: Number(result[0].insertId),
+    recipeId,
+    recipeName: normalized.recipe.name,
+    servings: normalized.servings,
+    rating: normalized.rating ?? null,
+    notes: normalized.notes?.trim() || null,
+    cookedAt: cookedAt.getTime(),
+  };
+}
+
+export async function listMealLogs(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Meal history is not available right now.");
+
+  const records = await db.select().from(mealLogs).where(eq(mealLogs.userId, userId)).orderBy(desc(mealLogs.cookedAt));
+  return records.map((record) => ({
+    id: record.id,
+    recipeId: record.recipeId,
+    recipeName: record.recipeName,
+    recipe: RecipeSchema.parse(JSON.parse(record.recipeData)),
+    servings: record.servings,
+    rating: record.rating,
+    notes: record.notes,
+    cookedAt: record.cookedAt.getTime(),
+  }));
+}

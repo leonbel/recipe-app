@@ -6,7 +6,7 @@
     "api/recipes.ts": {
       "maxDuration": 30
     },
-    "api/trpc/[trpc].ts": {
+    "api/meals.ts": {
       "maxDuration": 30
     }
   },

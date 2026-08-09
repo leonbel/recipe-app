@@ -3,9 +3,10 @@ import { filterMealHistory, type MealLogRecord, type RatingFilter } from "@/lib/
 import { saveActiveRecipe } from "@/lib/recipeSelection";
 import { recipeResultId } from "@/lib/recipePresentation";
 import { trpc } from "@/lib/trpc";
+import { listMealsOnVercel, shouldUseVercelMealsEndpoint } from "@/lib/vercelMeals";
 import { APP_ROUTES, recipeDetailPath } from "@/routes";
 import { ArrowLeft, ArrowRight, ChefHat, Search, Sparkles, Star } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 
 const filters: Array<{ id: RatingFilter; label: string }> = [
@@ -19,10 +20,30 @@ export default function MealHistory() {
   const { user } = useSupabaseAuth();
   const [search, setSearch] = useState("");
   const [ratingFilter, setRatingFilter] = useState<RatingFilter>("all");
-  const historyQuery = trpc.meals.list.useQuery(undefined, { enabled: Boolean(user) });
-  const meals = (historyQuery.data ?? []) as MealLogRecord[];
-  const loading = Boolean(user) && historyQuery.isLoading;
-  const historyError = historyQuery.error?.message ?? null;
+  const useVercelEndpoint = shouldUseVercelMealsEndpoint();
+  const historyQuery = trpc.meals.list.useQuery(undefined, { enabled: Boolean(user) && !useVercelEndpoint });
+  const [vercelMeals, setVercelMeals] = useState<MealLogRecord[]>([]);
+  const [vercelLoading, setVercelLoading] = useState(useVercelEndpoint);
+  const [vercelError, setVercelError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    if (!useVercelEndpoint || !user) return;
+    setVercelLoading(true);
+    setVercelError(null);
+    void listMealsOnVercel().then((records) => {
+      if (active) setVercelMeals(records);
+    }).catch((error) => {
+      if (active) setVercelError(error instanceof Error ? error.message : "We could not load your meal history.");
+    }).finally(() => {
+      if (active) setVercelLoading(false);
+    });
+    return () => { active = false; };
+  }, [user?.id, useVercelEndpoint]);
+
+  const meals = useVercelEndpoint ? vercelMeals : (historyQuery.data ?? []) as MealLogRecord[];
+  const loading = Boolean(user) && (useVercelEndpoint ? vercelLoading : historyQuery.isLoading);
+  const historyError = useVercelEndpoint ? vercelError : historyQuery.error?.message ?? null;
 
   const visibleMeals = useMemo(() => filterMealHistory(meals, search, ratingFilter), [meals, ratingFilter, search]);
 

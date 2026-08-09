@@ -108,3 +108,5 @@
 - [ ] Forward Supabase access tokens through the tRPC client and resolve them into protected backend users.
 - [ ] Publish the current validated full-build release to `leonbel/recipe-app` on GitHub `main` without creating a ZIP.
 - [ ] Verify `recipe-app-ten-lyart.vercel.app` serves the updated populated recipe-results design and current app routes.
+- [ ] Diagnose and repair the `FUNCTION_INVOCATION_FAILED` error returned by the deployed `/api/trpc/meals.list` endpoint.
+- [ ] Re-verify the deployed protected meal endpoint returns an authentication response rather than a serverless runtime failure.

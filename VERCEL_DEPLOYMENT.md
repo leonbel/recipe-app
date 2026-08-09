@@ -8,7 +8,7 @@ The project uses `pnpm build` and emits its Vite client build to `dist/public`. 
 
 ## Account meal history
 
-`/api/trpc/[trpc]` now exposes the same protected meal-log procedures used in local development. The browser forwards the active Supabase access token with its tRPC requests. The serverless context verifies that token with Supabase, maps the account to an internal user, and then persists completed cooks in the `meal_logs` table.
+`/api/meals` is a self-contained Vercel serverless endpoint for account history. It verifies the active Supabase bearer token, maps the account to an internal user, and persists completed cooks in the `meal_logs` table. Local development retains the protected tRPC meal procedures.
 
 Set these values in the Vercel project for the same environments as the client build:
 

@@ -4,6 +4,7 @@ import { formatTimer } from "@/lib/recipeExperience";
 import { isPublicDesignReviewPreview } from "@/lib/recipePresentation";
 import { resolveRecipeForRoute } from "@/lib/recipeSelection";
 import { trpc } from "@/lib/trpc";
+import { saveMealOnVercel, shouldUseVercelMealsEndpoint } from "@/lib/vercelMeals";
 import { APP_ROUTES, recipeDetailPath } from "@/routes";
 import { ArrowLeft, ArrowRight, Check, ChefHat, Clock3, Pause, Play, RotateCcw, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -87,8 +88,13 @@ export default function CookingMode({ recipeId }: CookingModeProps) {
         if (!user) return;
         setSaving(true);
         try {
-          await saveMeal.mutateAsync({ recipe, servings: recipe.base_servings, rating, notes });
-          await utils.meals.list.invalidate();
+          const input = { recipe, servings: recipe.base_servings, rating, notes };
+          if (shouldUseVercelMealsEndpoint()) {
+            await saveMealOnVercel(input);
+          } else {
+            await saveMeal.mutateAsync(input);
+            await utils.meals.list.invalidate();
+          }
           setSaved(true);
           setCompletionOpen(false);
           toast.success("Saved to your account meal history.");

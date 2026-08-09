@@ -21,4 +21,10 @@ describe("Vercel SPA routing configuration", () => {
     );
     expect(rewrites.some((rewrite) => rewrite.source.startsWith("/api"))).toBe(false);
   });
+
+  it("configures the self-contained meals serverless function without routing API paths into the SPA", () => {
+    const configPath = path.resolve(process.cwd(), "vercel.json");
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8")) as { functions?: Record<string, { maxDuration?: number }> };
+    expect(config.functions?.["api/meals.ts"]?.maxDuration).toBe(30);
+  });
 });

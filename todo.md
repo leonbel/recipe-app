@@ -38,6 +38,11 @@
 - [x] Add Vitest coverage for recipe schema validation, prompt construction, and capture option changes.
 - [ ] Verify a live Gemini recipe generation response and the responsive capture experience.
 - [ ] Enable positive Gemini `generateContent` quota or billing for the configured native API key; live requests currently return HTTP 429 with free-tier request limit 0.
+- [ ] Determine whether the active Gemini key is blocked by unavailable billing or a quota-tier limit, then provide the exact Google Cloud Console verification path.
+- [ ] Add a positive Gemini prepaid credit balance for the paid Tier 1 account, then verify live Gemini 2.0 Flash generation with the existing recipe-app key.
+- [ ] Retest the active live recipe-generation endpoint after the owner added Gemini prepaid credit.
+- [ ] Resolve the confirmed Gemini API 404 showing that `gemini-2.0-flash` is no longer available; do not change the requested model without owner approval.
+- [ ] Migrate the approved live recipe generator from retired `gemini-2.0-flash` to supported `gemini-3.6-flash` while preserving its structured JSON contract and fallback behavior.
 - [x] Inspect the current build and deployment configuration for Vercel serverless compatibility.
 - [x] Add an `api/recipes.ts` Vercel serverless endpoint that validates recipe requests and returns JSON on every response path.
 - [x] Route deployed recipe generation through the Vercel endpoint while preserving the local tRPC workflow.
@@ -85,11 +90,11 @@
 - [x] Verify the public review-preview route displays food imagery on desktop and mobile after the Vercel routing repair.
 - [x] Analyze the delivery process to date against Spec-Driven Development principles.
 - [x] Prepare actionable specification-led recommendations for the remaining recipe-app stages.
-- [ ] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
+- [x] Create and verify the initial main branch in leonbel/recipe-app after confirming repository access.
 - [x] Publish the current reviewed application code to leonbel/recipe-app on main.
 - [x] Verify the pushed GitHub revision is ready for Vercel deployment.
 - [x] Re-authorise GitHub with repository contents-write access; the active token can read repository metadata but receives HTTP 403 on write operations.
-- [ ] Integrate Gemini recipe generation with the specified structured JSON schema.
+- [x] Integrate Gemini recipe generation with the specified structured JSON schema.
 - [x] Build recipe results with frosted-glass cards and Pollinations.ai images.
 - [x] Build recipe detail with live servings and ingredient quantity scaling.
 - [x] Build full-screen cooking mode with per-step countdown timers.
@@ -105,8 +110,13 @@
 - [ ] Run one final signed-in browser acceptance test for post-cook save and meal-history display after a Supabase login.
 - [x] Wire signed-in post-cook saving to the real persisted meal-log backend with loading, error, and success handling.
 - [x] Load signed-in meal history from the real persisted meal-log backend while retaining guest-safe behavior.
-- [ ] Forward Supabase access tokens through the tRPC client and resolve them into protected backend users.
-- [ ] Publish the current validated full-build release to `leonbel/recipe-app` on GitHub `main` without creating a ZIP.
-- [ ] Verify `recipe-app-ten-lyart.vercel.app` serves the updated populated recipe-results design and current app routes.
-- [ ] Diagnose and repair the `FUNCTION_INVOCATION_FAILED` error returned by the deployed `/api/trpc/meals.list` endpoint.
-- [ ] Re-verify the deployed protected meal endpoint returns an authentication response rather than a serverless runtime failure.
+- [x] Forward Supabase access tokens through the tRPC client and resolve them into protected backend users.
+- [x] Publish the current validated full-build release to `leonbel/recipe-app` on GitHub `main` without creating a ZIP.
+- [x] Verify `recipe-app-ten-lyart.vercel.app` serves the updated populated recipe-results design and remaining important app routes.
+- [x] Diagnose and repair the `FUNCTION_INVOCATION_FAILED` error returned by the deployed `/api/trpc/meals.list` endpoint.
+- [x] Re-verify the deployed protected meal endpoint returns an authentication response rather than a serverless runtime failure.
+- [x] Confirm that the post-reconnection Vercel deployment from trigger commit `1cf1ca6` includes repaired source commit `b5a2496`.
+- [x] Verify the live capture, authentication, and protected-history route behavior on `recipe-app-ten-lyart.vercel.app`.
+- [x] Verify the Vercel SPA rewrites cover every defined client route; `/auth` is intentionally invalid and `/login` is the live authentication route.
+- [x] Verify the actual `/login` route loads correctly on `recipe-app-ten-lyart.vercel.app`.
+- [x] Resolve why Vercel tracks `de0bfb4` as current while GitHub main is at repaired commit `b5a2496`.

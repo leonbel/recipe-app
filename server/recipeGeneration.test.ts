@@ -65,7 +65,7 @@ describe("native Gemini recipe generation", () => {
     expect(result.recipes).toHaveLength(4);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, request] = fetchMock.mock.calls[0] as [string, RequestInit];
-    expect(url).toContain("models/gemini-2.0-flash:generateContent");
+    expect(url).toContain("models/gemini-3.6-flash:generateContent");
     expect(request.headers).toMatchObject({ "x-goog-api-key": "test-key" });
     const payload = JSON.parse(String(request.body));
     expect(payload.generationConfig).toMatchObject({ responseMimeType: "application/json" });

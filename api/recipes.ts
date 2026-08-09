@@ -1,7 +1,7 @@
 const HEALTH_TAGS = ["High protein", "Gut-friendly", "Low carb", "High iron", "Low fat", "Clean carb", "Indulgent"] as const;
 const TIME_AVAILABLE_OPTIONS = ["30 min", "1 hr", "2 hrs", "All day"] as const;
 const INGREDIENT_GROUPS = ["Protein", "Produce", "Pantry", "To buy"] as const;
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "gemini-3.6-flash";
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 type HealthTag = (typeof HEALTH_TAGS)[number];

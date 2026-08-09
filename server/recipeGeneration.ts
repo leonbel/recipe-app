@@ -8,7 +8,7 @@ import {
   type RecipeGenerationResponse,
 } from "../shared/recipe";
 
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "gemini-3.6-flash";
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 type GeminiResponse = {

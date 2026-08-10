@@ -43,6 +43,13 @@
 - [ ] Retest the active live recipe-generation endpoint after the owner added Gemini prepaid credit.
 - [ ] Resolve the confirmed Gemini API 404 showing that `gemini-2.0-flash` is no longer available; do not change the requested model without owner approval.
 - [ ] Migrate the approved live recipe generator from retired `gemini-2.0-flash` to supported `gemini-3.6-flash` while preserving its structured JSON contract and fallback behavior.
+- [ ] Diagnose and repair the production Supabase email/password signup failure reported as “Load failed” on `recipe-app-ten-lyart.vercel.app`.
+- [ ] Verify live email signup/sign-in and one signed-in meal save appears in account history after reload.
+- [ ] Retest account creation against the resumed Supabase project and inspect post-recovery log behavior for ongoing errors.
+- [ ] Assess Supabase free-tier inactivity pause behavior and provide a proportionate operational recommendation.
+- [ ] Repair the Supabase email-confirmation redirect from `localhost:3000` to the production authentication callback URL.
+- [ ] Configure the deployed Vercel meal-history endpoint so signed-in post-cook saves no longer show “Meal history is not configured for this deployment yet.”
+- [ ] Replace the unavailable production database dependency with Supabase account-backed meal persistence for signed-in cooking history.
 - [x] Inspect the current build and deployment configuration for Vercel serverless compatibility.
 - [x] Add an `api/recipes.ts` Vercel serverless endpoint that validates recipe requests and returns JSON on every response path.
 - [x] Route deployed recipe generation through the Vercel endpoint while preserving the local tRPC workflow.

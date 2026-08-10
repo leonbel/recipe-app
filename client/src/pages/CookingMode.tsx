@@ -3,8 +3,7 @@ import { useSupabaseAuth } from "@/contexts/SupabaseAuthContext";
 import { formatTimer } from "@/lib/recipeExperience";
 import { isPublicDesignReviewPreview } from "@/lib/recipePresentation";
 import { resolveRecipeForRoute } from "@/lib/recipeSelection";
-import { trpc } from "@/lib/trpc";
-import { saveMealOnVercel, shouldUseVercelMealsEndpoint } from "@/lib/vercelMeals";
+import { saveAccountMealHistory } from "@/lib/supabaseMealHistory";
 import { APP_ROUTES, recipeDetailPath } from "@/routes";
 import { ArrowLeft, ArrowRight, Check, ChefHat, Clock3, Pause, Play, RotateCcw, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -27,8 +26,6 @@ export default function CookingMode({ recipeId }: CookingModeProps) {
   const [completionOpen, setCompletionOpen] = useState(showCompletionPreview);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
-  const utils = trpc.useUtils();
-  const saveMeal = trpc.meals.create.useMutation();
 
   const steps = recipe?.steps.slice().sort((a, b) => a.order - b.order) ?? [];
   const step = steps[activeStep];
@@ -89,12 +86,7 @@ export default function CookingMode({ recipeId }: CookingModeProps) {
         setSaving(true);
         try {
           const input = { recipe, servings: recipe.base_servings, rating, notes };
-          if (shouldUseVercelMealsEndpoint()) {
-            await saveMealOnVercel(input);
-          } else {
-            await saveMeal.mutateAsync(input);
-            await utils.meals.list.invalidate();
-          }
+          await saveAccountMealHistory(input);
           setSaved(true);
           setCompletionOpen(false);
           toast.success("Saved to your account meal history.");

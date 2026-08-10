@@ -9,7 +9,7 @@ export type MealLogRecord = {
   cookedAt: number;
 };
 
-type RecordMealInput = Omit<MealLogRecord, "id" | "cookedAt"> & { cookedAt?: number };
+export type RecordMealInput = Omit<MealLogRecord, "id" | "cookedAt"> & { cookedAt?: number };
 export type RatingFilter = "all" | "five" | "four-plus" | "unrated";
 
 export function isMealLogRecord(value: unknown): value is MealLogRecord {

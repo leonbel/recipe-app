@@ -38,4 +38,8 @@ After the owner funded the existing paid Tier 1 Gemini billing account, a direct
 
 A funded-key verification against `gemini-3.6-flash` returned HTTP 200 for a JSON-schema-constrained response, confirming that the approved successor supports the structured-output capability required by the recipe contract. Production deployment verification remains pending.
 
+The production guest capture flow was opened after deployment of the Gemini 3.6 Flash migration and accepted a selected Chicken breast ingredient with the High protein preference, preparing the visible end-to-end generation check.
+
+The visible production capture flow then completed successfully and navigated to `/recipes` with four live, non-fallback chicken recipe options. The result names differed from the embedded fallback set, confirming that funded Gemini 3.6 Flash generation is live in the deployed user journey.
+
 [1]: https://ai.google.dev/gemini-api/docs/deprecations
